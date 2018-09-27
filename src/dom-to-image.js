@@ -191,8 +191,13 @@
             return node.cloneNode(false);
         }
 
+        function copyShadowChild(original) {
+            var child = document.getElementById(original.href.baseVal.replace('#', ''));
+            return [child.cloneNode(true)];
+        }
+
         function cloneChildren(original, clone, filter) {
-            var children = original.childNodes;
+            var children = original.tagName === 'use' ? copyShadowChild(original) : original.childNodes;
             if (children.length === 0) return Promise.resolve(clone);
 
             return cloneChildrenInOrder(clone, util.asArray(children), filter)
